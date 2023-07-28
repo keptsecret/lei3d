@@ -97,8 +97,7 @@ namespace lei3d
 	/** 
 	 * Set OpenGL to use this shader. 
 	 */
-	void Shader::use() 
-	{
+	void Shader::use() const {
 		glUseProgram(shaderProgramID);
 	}
 

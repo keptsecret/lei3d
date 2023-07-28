@@ -6,11 +6,11 @@ out vec2 TexCoord;
 
 uniform mat4 model;
 uniform mat4 view;
-uniform mat4 proj;
+uniform mat4 projection;
 
 // outputting the vertex position as color to see what happens
 void main()
 {
-    gl_Position = proj * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     TexCoord = aTexCoord;
 }

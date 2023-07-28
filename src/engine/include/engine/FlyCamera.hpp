@@ -25,6 +25,8 @@ namespace lei3d
         void handleRight(float deltaTime);
         void handleBack(float deltaTime);
 
+        glm::vec3 getPosition() const { return cameraPos; }
+
     private:
         GLFWwindow* window;
         float yaw;

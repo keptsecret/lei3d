@@ -101,6 +101,8 @@ namespace lei3d
 
         // Create physics world
         physicsObjects = CreatePhysicsWorld();
+
+        renderer.initialize(screenWidth, screenHeight);
     }
 
     void Engine::Load()
@@ -108,7 +110,7 @@ namespace lei3d
         GLCall(glEnable(GL_DEPTH_TEST));
 
         // load shaders
-        shader = Shader("./data/shaders/transformations.vert", "./data/shaders/transformations.frag");
+//        shader = Shader("./data/shaders/transformations.vert", "./data/shaders/transformations.frag");
 
         // load textures
         stbi_set_flip_vertically_on_load(true);
@@ -195,67 +197,69 @@ namespace lei3d
     void Engine::RenderScene()
     {
         // rendering
-        GLCall(glClearColor(0.2f, 0.8f, 0.9f, 1.0f));
-        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+//        GLCall(glClearColor(0.2f, 0.8f, 0.9f, 1.0f));
+//        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-        // Use transformation Shader for Rendering Main Object
-		shader.use();
+//         Use transformation Shader for Rendering Main Object
+//		shader.use();
 
-        // -- Set up camera views and pass to shader
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 400.0f);
-		shader.setUniformMat4(projection, "proj");
-		
-		glm::mat4 view = camera->getCameraView();
-		shader.setUniformMat4(view, "view");
+//         -- Set up camera views and pass to shader
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1200.0f / 1000.0f, 0.1f, 400.0f);
+//		shader.setUniformMat4(projection, "projection");
+
+//		glm::mat4 view = camera->getCameraView();
+//		shader.setUniformMat4(view, "view");
 
         // RENDER FIRST OBJECT
-        backpackEntity.SetScale(glm::vec3(0.25, 0.25, 0.25));
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::scale(model, backpackEntity.transform.scale);
+//        backpackEntity.SetScale(glm::vec3(0.25, 0.25, 0.25));
+//		glm::mat4 model = glm::mat4(1.0f);
+//		model = glm::scale(model, backpackEntity.transform.scale);
 
         // -- translate the backpack
-        glm::vec3 physicsPos = GetFirstColliderPosition(this->physicsObjects);
-		backpackEntity.SetPosition(physicsPos);
-        model = glm::translate(model, backpackEntity.transform.position);
-		shader.setUniformMat4(model, "model");
+//        glm::vec3 physicsPos = GetFirstColliderPosition(this->physicsObjects);
+//		backpackEntity.SetPosition(physicsPos);
+//        model = glm::translate(model, backpackEntity.transform.position);
+
+        renderer.draw(backpackEntity, skybox, camera);
+//		shader.setUniformMat4(model, "model");
 
         // -- draw mesh
-        backpackEntity.model->Draw(shader);
+//        backpackEntity.model->Draw(shader);
 
         // RENDER SECOND OBJECT
 
-		model = glm::mat4(1.0f);
-        backpackEntity.SetScale(glm::vec3(5.25, 3.25, 2.25));
-		model = glm::scale(model, backpackEntity.transform.scale);
-		shader.setUniformMat4(model, "model");
-
-        // -- draw mesh
-        backpackEntity.model->Draw(shader);
-        
-        // RENDER THIRD OBJECT
-
-		model = glm::mat4(1.0f);
-        backpackEntity.SetScale(glm::vec3(1.25, 1.25, 1.25));
-		model = glm::scale(model, backpackEntity.transform.scale);
-		shader.setUniformMat4(model, "model");
-
-        // -- draw mesh
-        backpackEntity.model->Draw(shader);
+//		model = glm::mat4(1.0f);
+//        backpackEntity.SetScale(glm::vec3(5.25, 3.25, 2.25));
+//		model = glm::scale(model, backpackEntity.transform.scale);
+//		shader.setUniformMat4(model, "model");
+//
+//        // -- draw mesh
+//        backpackEntity.model->Draw(shader);
+//
+//        // RENDER THIRD OBJECT
+//
+//		model = glm::mat4(1.0f);
+//        backpackEntity.SetScale(glm::vec3(1.25, 1.25, 1.25));
+//		model = glm::scale(model, backpackEntity.transform.scale);
+//		shader.setUniformMat4(model, "model");
+//
+//        // -- draw mesh
+//        backpackEntity.model->Draw(shader);
 
 
         // render skybox after rendering rest of the scene (only draw skybox where an object is not present)
-        GLCall(glDepthFunc(GL_LEQUAL)); // we change the depth function here to it passes when testingdepth value is equal to what is current stored
-        skybox.skyboxShader.use();
-        view = glm::mat4(glm::mat3(camera->getCameraView()));
-        skybox.skyboxShader.setUniformMat4(view, "view");
-        skybox.skyboxShader.setUniformMat4(projection, "projection");
-        // -- render the skybox cube
-        GLCall(glBindVertexArray(skybox.skyboxVAO));
-        GLCall(glActiveTexture(GL_TEXTURE0)); //! could be the problem
-        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.cubeMapTexture));
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
-        GLCall(glBindVertexArray(0));
-        GLCall(glDepthFunc(GL_LESS)); // set depth function back to normal
+//        GLCall(glDepthFunc(GL_LEQUAL)); // we change the depth function here to it passes when testingdepth value is equal to what is current stored
+//        skybox.skyboxShader.use();
+//        glm::mat4 view = glm::mat4(glm::mat3(camera->getCameraView()));
+//        skybox.skyboxShader.setUniformMat4(view, "view");
+//        skybox.skyboxShader.setUniformMat4(projection, "projection");
+//        // -- render the skybox cube
+//        GLCall(glBindVertexArray(skybox.skyboxVAO));
+//        GLCall(glActiveTexture(GL_TEXTURE0)); //! could be the problem
+//        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.cubeMapTexture));
+//        GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+//        GLCall(glBindVertexArray(0));
+//        GLCall(glDepthFunc(GL_LESS)); // set depth function back to normal
     }
 
     void Engine::processInput(GLFWwindow* window, int key, int scancode, int action, int mods)

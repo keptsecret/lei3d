@@ -18,6 +18,7 @@
 #include "engine/SkyBox.hpp"
 #include "engine/Entity.hpp"
 #include "physics/Physics.hpp"
+#include "engine/RenderSystem.hpp"
 
 namespace lei3d
 {
@@ -35,7 +36,9 @@ namespace lei3d
         PlaneMesh* groundPlane = nullptr;
         SkyBox skybox;
         Entity backpackEntity;
-        PhysicsObjects physicsObjects;        
+        PhysicsObjects physicsObjects;
+
+        RenderSystem renderer;
 
         float lastFrame = 0.0f; // used to keep track of delta time
         float deltaTime = 0.0f;
